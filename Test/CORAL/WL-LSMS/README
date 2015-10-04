@@ -1,0 +1,21 @@
+CORAL/WL-LSMS/README
+
+WL-LSMS benchmark: Fixed system size varrying number of Wang-Landau walkers (wl-lsms)
+
+This directory contains the input for wl-lsms runs.
+The input files are identical for all sizes as only the number of WL walkers changes.
+The physical system is a 1024 atom bcc iron system with 113 atoms in the local interaction zone.
+
+wl-lsms requires an additional MPI rank for the WL master. I.e. if each LSMS instance uses
+K MPI ranks the total number of ranks required is 1+K*N.
+with N walkers and M WL steps/walker use the following command:
+
+mpirun -np 1+K*N $(LSMS_DIRECTORY)/bin/wl-lsms -i i_lsms -mode 1d -size_lsms 1024 -num_lsms N -num_steps N*M
+
+i.e for 15 walkers and 20 steps/walker and 32 MPI ranks/walker:
+
+mpirun -np 481 wl-lsms -i i_lsms -mode 1d -size_lsms 1024 -num_lsms 15 -num_steps 300
+
+The figure of merit is:
+
+<walltime>*<number of nodes (K*N)>/<total number of steps (N*M)>

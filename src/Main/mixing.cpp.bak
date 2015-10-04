@@ -1,0 +1,57 @@
+#include "mixing.hpp"
+
+
+void setupMixing(MixingParameters &mix, Mixing* &mixing)
+{
+
+  printf("\nMixing method     : ");
+
+  // Default: no mixing
+  mixing = new NoMixing;
+
+  if (mix.quantity[0])    // no mixing
+  {
+    mixing = new NoMixing;
+    printf("no mixing\n");
+  }
+
+  if (mix.quantity[1] && !mix.quantity[2])    // charge mixing
+  {
+    switch (mix.algorithm[1]) {
+      case 1 :
+        mixing = new SimpleChargeDensityMixing(mix.mixingParameter[1]);
+        printf("simple\n");
+        break;
+      case 2 :
+        // broyden (not yet implemented)
+        printf("broyden\n");
+        break;
+      default :
+        mixing = new NoMixing;
+        printf("no mixing\n");
+    }
+    printf("Mixing quantity   : charge\n");
+    printf("Mixing parameters : %4.2f\n", mix.mixingParameter[1]);
+  }
+
+  if (mix.quantity[2] && !mix.quantity[1])    // potential mixing
+  {
+    switch (mix.algorithm[2]) {
+      case 1 :
+        mixing = new SimplePotentialMixing(mix.mixingParameter[2]);
+        printf("simple\n");
+        break;
+      case 2 :
+        // broyden (not yet implemented)
+        printf("broyden\n");
+        break;
+      default :
+        mixing = new FrozenPotential;
+        printf("frozen potential\n");
+    }
+    printf("Mixing quantity   : potential\n");
+    printf("Mixing parameters : %4.2f\n", mix.mixingParameter[2]);
+  }
+
+}
+

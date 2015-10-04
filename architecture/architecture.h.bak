@@ -1,0 +1,29 @@
+# Tested with 
+# gcc/4.3.2
+# hdf5/1.6.10
+# ompi/1.4.2-gnu4.3.2
+
+
+#extra
+export USE_OPENMP=1
+
+ACML_DIR=/ccs/proj/stf010/opt/acml_install/gfortran64/
+# ACML_DIR=/tmp/work/larkin/acml4.4.0/gfortran64
+
+export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/sw/yona/szip/2.1/centos5.5_gnu4.3.2/lib -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv
+
+export ADD_LIBS += -L$(TOP_DIR)/CBLAS/lib -lcblas_LINUX -L$(ACML_DIR) -lacml -lacml_mv -lgfortran $(PAPI_POST_LINK_OPTS)
+
+export INC_PATH += -I $(HDF5_DIR)/include -I$(TOP_DIR)/CBLAS/include -I$(ACML_DIR)/include
+
+#export ADDITIONAL_TARGETS = CBLAS_target
+
+export BOOST_ROOT=$(TOP_DIR)
+
+export F77 = vtf90 -vt:mt -vt:f90 mpif90 -O3 
+# export F77 = mpif90 -DACCELERATOR_CULA -DUSE_PAPI $(PAPI_INCLUDE_OPTS)
+export CXX = vtcxx -vt:mt -vt:cxx mpicxx -lshmem  -std=c++0x  -O3 -I$(BOOST_ROOT)
+# export CXX = mpicxx -DACCELERATOR_CULA -DUSE_PAPI $(PAPI_INCLUDE_OPTS) -I$(BOOST_ROOT)
+export CC = vtcc -vt:mt -vt:cc mpicc -lshmem -std=c++0x -O3
+# export CC = mpicc -DACCELERATOR_CULA  -DUSE_PAPI $(PAPI_INCLUDE_OPTS)
+export LUACXX = $(CXX)

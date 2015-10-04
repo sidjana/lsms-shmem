@@ -1,0 +1,18 @@
+CORAL/LSMS/FeX/README
+
+LSMS FeX benchmark: LSMS with varrying number of atoms, no Wang-Landau
+
+These are input files to test the scalling of LSMS (without the WL part).
+All inputs are for a X atom system with fixed size of the local interaction zone (113 atoms).
+the input files i_lsms_X are for a X atom simmulation cell.
+(The possible values of X are determined by the crystal geometry, and are given by 2*n^3.)
+
+The testcases provided in this directory can be run using the lsms executable:
+
+$(LSMS_DIRECTORY)/bin/lsms i_lsms_X
+
+The benchmarks can be run with a varrying number of MPI ranks that is less or equal to the number of atoms in the system and the figure of merrit is:
+
+<number of compute nodes> * <walltime> / <number of atoms>
+
+i_lsms_1024 corresponds to the input file used for the WL-LSMS tests.

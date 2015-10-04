@@ -1,0 +1,8 @@
+cmpirun  -bynode -bind-to-core  -hostfile temp -n 2  sh lsmswrap.sh lsms i_lsms 2>&1
+
+srun -p sandy -N 2 sh lsmswrap.sh ~/benchmarks/LSMS_3_rev228_shmem/Test/Fe2/lsms i_lsms
+
+
+To Debug:
+shmemrun -prefix $(dirname $(dirname $(which orted)))   -n 2 sh lsmswrap.sh xterm -e gdb --args /ccs/proj/stf010/opt/LSMS_3_rev228_shmem/bin/lsms i_lsms 2>&1 
+

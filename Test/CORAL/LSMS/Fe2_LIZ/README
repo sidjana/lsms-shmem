@@ -1,0 +1,25 @@
+CORAL/LSMS/Fe2_LIZ/README
+
+LSMS Fe2_LIZ benchmark: fixed numer of atoms (2) varrying size of matrix to invert (LIZ)
+
+These are input files to test the single node performance of LSMS (without the WL part).
+All inputs are for a two atom system with increasing size of the local interaction zone (LIZ).
+the input files i_lsms_NNN are for NNN atoms in the LIZ.
+(The possible values of NNN are determined by the crystal geometry, hence the set of inputs provided.)
+The main computational effort in LSMS calculations arrises usually from finding a 2*(lmax+1)^2 sub-block of the inverse of a general (non-Hermitian) double complex matrix of rank 2*(lmax+1)^2 * nLIZ.
+lmax is typically 3, but it can be any small integer (e.g. 2,3,4,5).
+
+The testcases provided in this directory can be run using the lsms executable:
+
+$(LSMS_DIRECTORY)/bin/lsms i_lsms_NNN
+
+i_lsms is identical to i_lsms_113, the rLIZ=12.5 case used in the WL-LSMS tests.
+
+The figure of merit is:
+
+<walltime> / <NNN^3>
+
+It might be expected that not all problem size can fit into the memory:
+The size of the matrix is 16 * (32 * NNN)^2 bytes (16 = size of complex<double>)
+The minimal requirement is the possibility to run the i_lsms_113 case required for
+the wl-lsms tests. 
