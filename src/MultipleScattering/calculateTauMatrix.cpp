@@ -1,5 +1,4 @@
 
-//#include <vt_user.h>
 #include "Real.hpp"
 #include "Complex.hpp"
 #include <vector>
@@ -268,13 +267,11 @@ void calculateTauMatrix(LSMSSystemParameters &lsms, LocalTypeInfo &local, AtomDa
   
   double timeBuildKKRMatrix=get_rtc();
 
-  //VT_USER_START("buildKKRMatrix");
 #ifdef BUILDKKRMATRIX_GPU
   buildKKRMatrix_gpu_opaque(lsms, local, atom, energy, prel, iie, m, d_const);
 #else
   buildKKRMatrix(lsms, local, atom, energy, prel, iie, m);
 #endif
-  //VT_USER_END("buildKKRMatrix");
 
 
   timeBuildKKRMatrix=get_rtc()-timeBuildKKRMatrix;
@@ -282,7 +279,6 @@ void calculateTauMatrix(LSMSSystemParameters &lsms, LocalTypeInfo &local, AtomDa
  
   // if(!lsms.global.checkIstop("buildKKRMatrix"))
   {
-  //VT_USER_START("setupMatrixInv");
 
     // invert matrix to get tau00
     // set up the block sizes for the block inversion:
@@ -344,22 +340,16 @@ void calculateTauMatrix(LSMSSystemParameters &lsms, LocalTypeInfo &local, AtomDa
     Complex *dev_m=get_dev_m_();
     clearM00(dev_m, blk_sz[0], nrmat_ns,get_stream_(0));
 #endif
-  //VT_USER_END("setupMatrixInv");
 #if defined (ACCELERATOR_CULA) || defined(ACCELERATOR_LIBSCI)
 #pragma omp critical
 #endif  
-  //VT_USER_START("MatrixInv");
     {
       block_inv_(&m(0,0),vecs,&nrmat_ns,&nrmat_ns,&nrmat_ns,ipvt,
           blk_sz,&nblk,delta,
           iwork,rwork,work1,&alg,idcol,&lsms.global.iprint);
     }
-  //VT_USER_END("MatrixInv");
 
-  //VT_USER_START("freeingvecs");
     if(alg>2) free(vecs);
-  //VT_USER_END("freeingvecs");
-  //VT_USER_START("TauInvPostproc");
 
     double timePostproc=get_rtc();
     Matrix<Complex> tau00(kkrsz_ns,kkrsz_ns);
@@ -367,20 +357,15 @@ void calculateTauMatrix(LSMSSystemParameters &lsms, LocalTypeInfo &local, AtomDa
         &m(0,0),delta,&local.tmatStore(iie*local.blkSizeTmatStore,atom.LIZStoreIdx[0]),ipvt,&tau00(0,0),
         atom.ubr,atom.ubrd,
         tau00_l);
-  //VT_USER_END("TauInvPostproc");
-  //VT_USER_START("MPI_time");
     timePostproc=get_rtc()-timePostproc;
     if(lsms.global.iprint>=1) printf("  timePostproc=%lf\n",timePostproc);
-  //VT_USER_END("MPI_time");
 
-  //VT_USER_START("delStructs");
     delete [] ipvt;
     delete [] delta;
     delete [] iwork;
     delete [] rwork;
     delete [] work1;
     delete [] idcol;
-  //VT_USER_END("delStructs");
   }
 }
 

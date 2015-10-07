@@ -1,3 +1,0 @@
-/home/siddhart/benchmarks/LSMS_3_rev253/Test/Fe2/lsms: error while loading shared libraries: libacml_mv.so: cannot open shared object file: No such file or directory
-/home/siddhart/benchmarks/LSMS_3_rev253/Test/Fe2/lsms: error while loading shared libraries: libacml_mv.so: cannot open shared object file: No such file or directory
-srun: error: taurusi1017: tasks 0-1: Exited with exit code 127

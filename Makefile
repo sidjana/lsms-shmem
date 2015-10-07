@@ -1,11 +1,11 @@
 
 export TOP_DIR = $(shell pwd)
-export HDF5_DIR = /home/siddhart/opt/hdf5_install/
+export HDF5_DIR = /home/sidjana/opt/hdf5_install/
  
 
 export INC_PATH =
 # export LIBS := -L$(TOP_DIR)/lua/lib -llua $(TOP_DIR)/mjson/mjson.a
-export LIBS := /home/siddhart/tests/energy_tests/fpga/hdeem_1.2/libhdeem.so /home/siddhart/opt/x86_adapt/build/libx86_adapt.so -lfreeipmi -lrt -D_GNU_SOURCE $(TOP_DIR)/lua/lib/liblua.a $(TOP_DIR)/mjson/mjson.a 
+export LIBS := -lrt -D_GNU_SOURCE $(TOP_DIR)/lua/lib/liblua.a $(TOP_DIR)/mjson/mjson.a 
 
 include architecture.h 
 

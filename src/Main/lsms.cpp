@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#include<vt_user.h>
-extern "C" {
-#include "../../instr.h"
-}
-
 // #include <fenv.h>
 
 #ifdef _OPENMP
@@ -150,12 +145,7 @@ int main(int argc, char *argv[])
   if(comm.comm.rank==0)
     lsms.global.iprint=0;
   
-  INITFREQ("2901000");
   shmem_barrier_all();
-  if(comm.comm.rank >= PE_ON_FPGA){ 
-    INIT(comm.comm.rank);
-    complete_lsms_id=START("complete_lsms",1); 
-  }
 
   if(comm.comm.rank==0)
   {
@@ -185,11 +175,9 @@ int main(int argc, char *argv[])
   }
  
   shmem_barrier_all();
-  //VT_USER_START("trial");
 
   communicateParameters(comm,lsms,crystal,mix);
   
-  //VT_USER_START("init2");
   if(comm.comm.rank!=lsms.global.print_node) lsms.global.iprint=lsms.global.default_iprint;
 
   local.setNumLocal(distributeTypes(crystal, comm));
@@ -248,9 +236,7 @@ int main(int argc, char *argv[])
 // the next line is a hack for initialization of potentials from scratch to work.
 //  if(lsms.pot_in_type<0) setupVorpol(lsms,crystal,local,sphericalHarmonicsCoeficients);
 
-  //VT_USER_START("ldPotentials");
   loadPotentials(comm,lsms,crystal,local);
-  //VT_USER_END("ldPotentials");
 
 // for testing purposes:
 //  std::vector<Matrix<Real> > vrs;
@@ -267,31 +253,23 @@ int main(int argc, char *argv[])
       interpolatePotential(lsms, local.atom[i]);
   }
 
-  //VT_USER_START("calcVols1");
   calculateVolumes(comm,lsms,crystal,local);
-  //VT_USER_END("calcVols1");
 
 //  loadPotentials(comm,lsms,crystal,local);
 
 // initialize Mixing
-  //VT_USER_START("initMixng");
   Mixing *mixing;
   setupMixing(mix, mixing);
-  //VT_USER_END("initMixng");
 
 // need to calculate madelung matrices
-  //VT_USER_START("calcMadeLungMat");
   calculateMadelungMatrices(lsms,crystal,local);
-  //VT_USER_END("calcMadeLungMat");
 
   if(lsms.global.iprint>=1)
   {
     printLocalTypeInfo(stdout,local);
   }
 
-  //VT_USER_START("calcCoreStates");
   calculateCoreStates(comm,lsms,local);
-  //VT_USER_END("calcCoreStates");
   if(lsms.global.iprint>=0)
     printf("%d Finished calculateCoreStates(...)\n",comm.comm.rank);
 
@@ -378,11 +356,8 @@ int main(int argc, char *argv[])
       printf("Iteration %d:\n",i);
 
 
-    //VT_USER_START("EnergyCountourIntegratn");
     energyContourIntegration(comm,lsms,local);
 
-    //VT_USER_END("EnergyCountourIntegratn");
-    //VT_USER_START("energy_potentials");
     double dTimeCCP = get_rtc();
     // if(!lsms.global.checkIstop("buildKKRMatrix"))
     calculateChemPot(comm,lsms,local,eband);
@@ -415,12 +390,9 @@ int main(int argc, char *argv[])
               iterationStart+i,lsms.totalEnergy,lsms.chempot,local.atom[0].mtotws,rms);
       fflush(kFile);
     }
-    //VT_USER_END("energy_potentials");
 
     // calculate core states for new potential if we are performing scf calculations
-    //VT_USER_START("calcCoreState");
     calculateCoreStates(comm,lsms,local);
-    //VT_USER_END("calcCoreState");
 
   // periodically write the new potential for scf calculations 
     potentialWriteCounter++;
@@ -492,10 +464,6 @@ int main(int argc, char *argv[])
     printf("\n********** Printing energy results:\n");
   }
   shmem_barrier_all();
-  if(comm.comm.rank >= PE_ON_FPGA){ 
-    END(complete_lsms_id); 
-    PRINT();
-  }
 
   local.tmatStore.unpinMemory();
 #ifdef BUILDKKRMATRIX_GPU
@@ -510,7 +478,6 @@ int main(int argc, char *argv[])
   H5close();
   finalizeCommunication();
   lua_close(L);
-  //VT_CLOSE();
 
   return 0;
 }

@@ -16,14 +16,14 @@ clean:
                       wl-lsms $(TOP_DIR)/bin/wl-lsms
 
 lsms: lsms.cpp libLSMS.a bind.o 
-	$(CXX) $(INC_PATH) $(gptl_def) -o lsms lsms.cpp libLSMS.a $(LIBS) $(ADD_LIBS) bind.o ../../instr.o ../../rtc.o # /home/siddhart/opt/x86_adapt/build/libx86_adapt.so 
+	$(CXX) $(INC_PATH) $(gptl_def) -o lsms lsms.cpp libLSMS.a $(LIBS) $(ADD_LIBS) bind.o ../../rtc.c  
 	cp lsms $(TOP_DIR)/bin
 
 bind.o:
 	$(CXX) -c bind.c
 
 wl-lsms: wl_lsms.cpp libLSMS.a
-	$(CXX) $(INC_PATH) -o wl-lsms wl_lsms.cpp libLSMS.a $(LIBS) $(ADD_LIBS)  #../../instr.o ../../rtc.o /home/siddhart/opt/x86_adapt/build/libx86_adapt.so
+	$(CXX) $(INC_PATH) -o wl-lsms wl_lsms.cpp libLSMS.a $(LIBS) $(ADD_LIBS)  
 	cp wl-lsms $(TOP_DIR)/bin
 
 lsms_inter: lsms_inter.cpp

@@ -1,10 +1,6 @@
 //#include <mpi.h>
 #include "LSMSCommunication.hpp" // this includes <shmem.h>
 
-extern "C" {
-#include "../../instr.h"
-}
-
 int const MAXPTS=3051;
 int const MAXCORE=30;
 
@@ -419,17 +415,6 @@ void communicateSingleAtomData(LSMSCommunication &comm, int from, int to, int &l
   static int count=0;
   const int ITER_MAX=1;
   int sec_id;
-  char instr_name[100];
-  char hostname[1024];
-  hostname[1023] = '\0';
-  gethostname(hostname, 1023);
-
-  sprintf(instr_name,"SA_%s_%d_%d",hostname,from,to);
-  if(comm.comm.rank != 0) 
-    INITFREQ("2901000");
-  if(comm.comm.rank >= PE_ON_FPGA)
-    sec_id = START(instr_name,ITER_MAX); // RAPL instr
-  
 
   if(comm.comm.rank==from)
   {
@@ -521,10 +506,6 @@ for(i=0;i<ITER_MAX;i++) {
    }
   }
 
- if(comm.comm.rank != 0)
-     INITFREQ("2901000");
- if(comm.comm.rank >= PE_ON_FPGA)
-     END(sec_id);
  
 }
 

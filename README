@@ -1,0 +1,9 @@
+
+This is the pure-OpenSHMEM version of the LSMS CORAL benchmark.
+
+Additional s/w Requirements:
+1. OpenSHMEM installation [set PATH, LD_LIBRARY_PATH environment vars, 
+			   set the correct compiler wrapper names in PARENT_DIR/Makefile]
+2. HDF5 installation [set HDF5_DIR in PARENT_DIR/Makefile]
+3. ACML installation (version 4-4-0) [set ACML_DIR in PARENT_DIR/architecture.h]
+

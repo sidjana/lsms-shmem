@@ -1,6 +1,5 @@
 // this replaces zplanint from LSMS_1.9
 
-//#include <vt_user.h>
 #include <vector>
 //#include <mpi.h>
 #include <complex>
@@ -98,7 +97,6 @@ void energyContourIntegration(LSMSCommunication &comm,LSMSSystemParameters &lsms
 
   vr_con.resize(local.num_local);
   evec_r.resize(3,local.num_local);
-  //VT_USER_START("setupConstraints");
 #pragma omp parallel for default(none) shared(local,lsms,vr_con,evec_r)
   for(int i=0; i<local.num_local; i++)
   {
@@ -148,8 +146,6 @@ void energyContourIntegration(LSMSCommunication &comm,LSMSSystemParameters &lsms
 // call zcopy(4,ud,1,ubrd,1)
     }
   }
-  //VT_USER_END("setupConstraints");
-  //VT_USER_START("initSolver");
   // Real e_top;
   // e_top=lsms.energyContour.etop;
   // if(lsms.energyContour.etop==0.0) etop=lsms.chempot;
@@ -209,7 +205,6 @@ void energyContourIntegration(LSMSCommunication &comm,LSMSSystemParameters &lsms
   }
 
   timeEnergyContourIntegration_1=get_rtc()-timeEnergyContourIntegration_1;
-  //VT_USER_END("setupConstraints");
   double timeEnergyContourIntegration_2=get_rtc();
   double timeCalculateAllTauMatrices=0.0;
 
@@ -229,7 +224,6 @@ void energyContourIntegration(LSMSCommunication &comm,LSMSSystemParameters &lsms
 
 if(lsms.global.iprint>=0) printf("calculate single scatterer solutions.\n");
 
-  //VT_USER_START("singleSiteSolver");
 #pragma omp parallel for default(none) shared(local,lsms,eGroupIdx,ig,egrd,solution,vr_con)
     for(int ie=eGroupIdx[ig]; ie<eGroupIdx[ig+1]; ie++)
     {
@@ -240,7 +234,6 @@ if(lsms.global.iprint>=0) printf("calculate single scatterer solutions.\n");
       solveSingleScatterers(lsms,local,vr_con,energy,solution[iie],iie);
     }
 
-  //VT_USER_END("singleSiteSolver");
     if(lsms.global.iprint>=1) printf("About to send t matrices\n");
     sendTmats(comm,local);
     if(lsms.global.iprint>=1) printf("About to finalize t matrices communication\n");
@@ -259,10 +252,8 @@ if(lsms.global.iprint>=0) printf("calculate single scatterer solutions.\n");
     Complex energy=egrd[ie];
     Complex pnrel=std::sqrt(energy);
     if(lsms.global.iprint>=0) printf("Energy #%d (%lf,%lf)\n",ie,real(energy),imag(energy));
-  //VT_USER_START("calcTauMatrices");
     double timeCATM=get_rtc();
     calculateAllTauMatrices(comm, lsms, local, vr_con, energy, iie, tau00_l);
-  //VT_USER_END("calcTauMatrices");
 
     timeCalculateAllTauMatrices+=get_rtc()-timeCATM;
     // if(!lsms.global.checkIstop("buildKKRMatrix"))
@@ -270,7 +261,6 @@ if(lsms.global.iprint>=0) printf("calculate single scatterer solutions.\n");
     double timeCalcDensities=get_rtc();
     if(lsms.nrel_rel==0)
     {
-  //VT_USER_START("Densities");
 // openMP here
 #pragma omp parallel for default(none) \
         shared(local,lsms,dos,dosck,green,dipole,solution,gauntCoeficients,dele1,tau00_l) \
@@ -305,7 +295,6 @@ if(lsms.global.iprint>=0) printf("calculate single scatterer solutions.\n");
                            local.atom[i]);
 
       }
-  //VT_USER_END("Densities");
     } else {
         printf("Relativistic version not implemented yet\n");
         exit(1);
