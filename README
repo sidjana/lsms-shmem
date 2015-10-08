@@ -30,6 +30,8 @@
         Examples:
 		- One a single node:           oshrun -np 4 ./lsms ./i_lsms
 		- In a cluster env with slurm: srun -N 2 -n 4 ./lsms ./i_lsms
+     3. Additional details about the relation of number of atoms and number of processes/ranks/PEs 
+        can be found at https://asc.llnl.gov/CORAL-benchmarks/Summaries/LSMS_Summary_v1.1.pdf
 
 ** Generated output:
    - File output:
@@ -42,6 +44,6 @@
      timer by the division-factor (obtainable by MSR))
 
 ** Contact:
-   - OpenSHMEM version:    Siddhartha Jana <sidjana@cs.uh.edu>
-   - Original MPI version: Markus Eisenbach <eisenbachm@ornl.gov>
+   - OpenSHMEM version    : Siddhartha Jana  (Univ of Houston) <sidjana@cs.uh.edu> 
+   - Original MPI version : Markus Eisenbach (ORNL)            <eisenbachm@ornl.gov>
 
