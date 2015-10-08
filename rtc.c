@@ -32,7 +32,7 @@ In Fortron code: do this:
 /*#define ARCH_PPC64*/
 
 #if defined(ARCH_X86)
-__inline__ unsigned long long get_rtc_1(void) {
+__inline__ unsigned long long get_rtc(void) {
     unsigned long low, high;
 
     do {
@@ -43,7 +43,7 @@ __inline__ unsigned long long get_rtc_1(void) {
     return (((unsigned long long)high << 32)) | ((unsigned long long)low);
 }
 #elif defined(ARCH_X86_64)
-__inline__ unsigned long long get_rtc_1(void) {
+__inline__ unsigned long long get_rtc(void) {
     unsigned long long rtc;
 
     do {
@@ -60,7 +60,7 @@ __inline__ unsigned long long get_rtc_1(void) {
     return rtc;
 }
 #elif defined(ARCH_IA64)
-__inline__ unsigned long long get_rtc_1(void) {
+__inline__ unsigned long long get_rtc(void) {
    unsigned long long rtc;
 
    do {
@@ -72,7 +72,7 @@ __inline__ unsigned long long get_rtc_1(void) {
     return rtc;
 }
 #elif defined(ARCH_PPC64)
-__inline__ unsigned long long get_rtc_1(void) {
+__inline__ unsigned long long get_rtc(void) {
     unsigned long low, high, high2;
 
     do {
@@ -86,7 +86,7 @@ __inline__ unsigned long long get_rtc_1(void) {
 	    ((unsigned long long)low)) * 8;
 }
 #elif defined(ARCH_NONE)
-__inline__ unsigned long long get_rtc_1(void) {
+__inline__ unsigned long long get_rtc(void) {
 	struct timeval Time;
 	unsigned long long time_microsec;
 	
@@ -114,9 +114,9 @@ __inline__ unsigned long long get_rtc_1(void) {
 	/* the value is in the cache */
 	return res;
 
-    rtc = get_rtc_1();
+    rtc = get_rtc();
     usleep(1000000); /* usleep doesn't work as desired */
-    res = get_rtc_1() - rtc;
+    res = get_rtc() - rtc;
 
     return res;
 }
@@ -130,10 +130,10 @@ static __inline__ unsigned long long get_rtc_perturb(void) {
 	return perturb;
 
     for (i = 0; i < 10; ++i)
-	rtc1 = get_rtc_1(); /* some shoot to load code cache ... */
+	rtc1 = get_rtc(); /* some shoot to load code cache ... */
 
-    rtc1 = get_rtc_1(); /* get base time */
-    rtc2 = get_rtc_1(); /* get end time */
+    rtc1 = get_rtc(); /* get base time */
+    rtc2 = get_rtc(); /* get end time */
 
     perturb = rtc2 - rtc1; /* make diff */
 
@@ -141,8 +141,8 @@ static __inline__ unsigned long long get_rtc_perturb(void) {
 }
 
 
-void get_rtc_1_(unsigned long long *rtc) {
-    *rtc = get_rtc_1();
+void get_rtc_(unsigned long long *rtc) {
+    *rtc = get_rtc();
 }
 
 void get_rtc_res_(unsigned long long *res) {
@@ -186,9 +186,9 @@ int main(int argc, char *argv[]) {
  
     printf("sleep %d seconds\n", sleep_time);
 
-    rtc1 = get_rtc_1();
+    rtc1 = get_rtc();
     sleep(sleep_time);
-    rtc2 = get_rtc_1();
+    rtc2 = get_rtc();
 
     diff = rtc2 - rtc1;
     res = get_rtc_res();

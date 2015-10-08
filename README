@@ -1,9 +1,45 @@
 
-This is the pure-OpenSHMEM version of the LSMS CORAL benchmark.
+** Note:
+   This is the pure-OpenSHMEM (no MPI calls) version of the LSMS
+   CORAL benchmark. The version uploaded on the CORAL website is
+   written in MPI. The OpenSHMEM version was built on top of
+   revision-228 of that MPI version.
 
-Additional s/w Requirements:
-1. OpenSHMEM installation [set PATH, LD_LIBRARY_PATH environment vars, 
-			   set the correct compiler wrapper names in PARENT_DIR/Makefile]
-2. HDF5 installation [set HDF5_DIR in PARENT_DIR/Makefile]
-3. ACML installation (version 4-4-0) [set ACML_DIR in PARENT_DIR/architecture.h]
+** Additional s/w Requirements:
+   1. OpenSHMEM installation [set the correct compiler wrapper names in ${PARENT_DIR}/Makefile]
+   2. HDF5 installation [set HDF5_DIR in ${PARENT_DIR}/Makefile]
+   3. ACML installation (version 4-4-0) [set ACML_DIR in ${PARENT_DIR}/architecture.h]
+
+   - The authors have tested the application using:
+     -- SHMEM-versions: UH Reference implementation (gasnet-ibv)
+     -- Prebuilt HDF5 binary (Linux-2.6, x86_64, gcc-4.4.7)
+     -- ACML installation (version 4.4.0, 64nit, gfortran)
+
+
+** Running the application:
+   - After the application is built, the executable is copied to
+     ${PARENT_DIR}/bin/
+   - The lsms application takes a file named 'i_lsms' as input.
+     Sample input files are present in
+     ${PARENT_DIR}/Test/Fe<num-atoms>/i_lsms
+     Where <num-atoms> == <numpes>
+
+   - Steps:
+     1. Add ${ACML_DIR} and ${HDF5_DIR} to LD_LIBRARY_PATH
+     2. Run command: <job launcher> -np <numpes> <executable-path>/lsms <input-file-path>/i_lsms
+        eg : oshrun -np 4 ./lsms ./i_lsms
+
+** Generated output:
+   - File output:
+     Text files named 'k.out', 'w_fe2.<atom-id>' are generated
+     in the launch-directory
+   - Standard output:
+     The timing information displayed on the stdout
+     is in terms of number of ticks by the TSC (Time stamp
+     counter). (TODO: Display results in terms of seconds. Divide
+     timer by the division-factor (obtainable by MSR))
+
+** Contact:
+   - OpenSHMEM version:    Siddhartha Jana <sidjana@cs.uh.edu>
+   - Original MPI version: Markus Eisenbach <eisenbachm@ornl.gov>
 

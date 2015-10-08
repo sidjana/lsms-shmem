@@ -1,6 +1,6 @@
 
 export TOP_DIR = $(shell pwd)
-export HDF5_DIR = /home/sidjana/opt/hdf5_install/
+export HDF5_DIR = /home/sidjana/opt/hdf5_install_gcc4_4_7/
  
 
 export INC_PATH =

@@ -452,7 +452,7 @@ void communicateSingleAtomData(LSMSCommunication &comm, int from, int to, int &l
     memcpy(&p2p_buf[pos],&atom.lc(0,0),2*t*int_size); pos+=2*t*int_size;
     memcpy(&p2p_buf[pos],&atom.kc(0,0),2*t*int_size); pos+=2*t*int_size;
 
-    shmem_int_wait_until((sync_send_flag+to),SHMEM_CMP_EQ,1);
+    shmem_int_wait_until((sync_send_flag+to),_SHMEM_CMP_EQ,1);
     shmem_putmem(p2p_buf, p2p_buf, 1048576, to);
     shmem_int_add((sync_send_flag+to),-1,comm.comm.rank);
     shmem_int_add((sync_recv_flag+comm.comm.rank),1,to);
@@ -469,7 +469,7 @@ for(i=0;i<ITER_MAX;i++) {
     sync_recv_flag[from]=0;
     shmem_int_add((sync_send_flag+comm.comm.rank),1,from);
     shmem_quiet();
-    shmem_int_wait_until((sync_recv_flag+from),SHMEM_CMP_EQ,1);
+    shmem_int_wait_until((sync_recv_flag+from),_SHMEM_CMP_EQ,1);
   
     memcpy(&local_id,&p2p_buf[pos],int_size); pos+=int_size;
     memcpy(&atom.jmt,&p2p_buf[pos],int_size); pos+=int_size;
