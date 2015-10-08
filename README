@@ -27,7 +27,9 @@
    - Steps:
      1. Add ${ACML_DIR} and ${HDF5_DIR} to LD_LIBRARY_PATH
      2. Run command: <job launcher> -np <numpes> <executable-path>/lsms <input-file-path>/i_lsms
-        eg : oshrun -np 4 ./lsms ./i_lsms
+        Examples:
+		- One a single node:           oshrun -np 4 ./lsms ./i_lsms
+		- In a cluster env with slurm: srun -N 2 -n 4 ./lsms ./i_lsms
 
 ** Generated output:
    - File output:

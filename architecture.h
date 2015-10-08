@@ -7,9 +7,10 @@
 #extra
 export USE_OPENMP=0
 
-ACML_DIR=/home/sidjana/opt/acml_4_4_0_install/gfortran64
+ACML_DIR=/home/sidjana/opt/acml_install/gfortran64
 
-export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv /usr/lib64/libppl_c.so.2 -L/opt/local/gcc/5.2.0/lib64/ -pthread  -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
+export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv /usr/lib64/libppl_c.so.4  -pthread  -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
+#export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv /usr/lib64/libppl_c.so.2 -L/opt/local/gcc/5.2.0/lib64/ -pthread  -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
 
 
 #export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv  -L/sw/global/compilers/gcc/4.8.2/lib64/ -pthread -L/sw/taurus/libraries/bullxmpi/1.2.4.3/lib/ -lmpi -lmpi_cxx -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil

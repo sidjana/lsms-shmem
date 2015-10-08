@@ -32,10 +32,10 @@ void initializeCommunication(LSMSCommunication &comm)
   //MPI_Comm_size(comm.comm, &comm.size);
   
   int i;
-  start_pes(0);
+  shmem_init();
   allocate_symm_buffers();
-  comm.comm.rank = _my_pe();
-  comm.comm.size = _num_pes();
+  comm.comm.rank = shmem_my_pe();
+  comm.comm.size = shmem_n_pes();
   comm.comm.start_pe = 0;
   comm.comm.logPE_stride = 0;
   sync_send_flag=(int*)shmalloc(comm.comm.size*sizeof(int));
@@ -65,8 +65,8 @@ void initializeCommunication(LSMSCommunication &comm, SHMEM_activeset comm_shmem
   //comm.comm=mpiCommunicator;
   //MPI_Comm_rank(comm.comm, &comm.rank);
   //MPI_Comm_size(comm.comm, &comm.size);
-  comm.comm.rank = _my_pe();
-  comm.comm.size = _num_pes();
+  comm.comm.rank = shmem_my_pe();
+  comm.comm.size = shmem_n_pes();
   comm.comm.start_pe = comm_shmem.start_pe;
   comm.comm.logPE_stride = comm_shmem.logPE_stride;
 }

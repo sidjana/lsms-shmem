@@ -225,12 +225,12 @@ int main(int argc, char *argv[])
 
   // initialize MPI:
   //MPI_Init(&argc, &argv);
-  start_pes();
+  shmem_init();
   //MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   rank = _me_pe();
   world_rank = rank;
   //MPI_Comm_size(MPI_COMM_WORLD, &size);
-  size = _num_pes();
+  size = shmem_n_pes();
 
   walltime_0 = get_rtc();
 

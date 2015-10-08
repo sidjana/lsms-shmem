@@ -291,8 +291,8 @@ int main(int argc, char *argv[])
   if(num_lsms==1)
   {
     SHMEM_activeset local_comm;
-    local_comm.rank=_my_pe();
-    local_comm.size=_num_pes();
+    local_comm.rank=shmem_my_pe();
+    local_comm.size=shmem_n_pes();
     local_comm.start_pe=0;
     local_comm.logPE_stride=0;
     LSMS lsms_calc(local_comm,i_lsms_name,"1_");

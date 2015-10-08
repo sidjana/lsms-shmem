@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
     potentialWriteCounter++;
     if(lsms.pot_out_type>=0) // && potentialWriteCounter>=lsms.writeSteps)
     {
-      printf("calling within loop: Writing new potentials.\n");
+      printf("Writing new potentials.\n");
       writePotentials(comm,lsms,crystal,local);
       potentialWriteCounter=0;
     }
@@ -420,7 +420,7 @@ int main(int argc, char *argv[])
   long long static accumulated_counters[NUM_PAPI_EVENTS+4];
   //MPI_Reduce(papi_values,accumulated_counters,hw_counters+4,
   //           MPI_LONG,MPI_SUM,0,MPI_COMM_WORLD);
-  shmem_longlong_sum_to_all(accumulated_counters, papi_values, hw_counters+4, 0, 0, num_pes(), pWrk_ll,
+  shmem_longlong_sum_to_all(accumulated_counters, papi_values, hw_counters+4, 0, 0, shmem_n_pes(), pWrk_ll,
       pSync1);
 
   if(comm.comm.rank==0)
@@ -461,7 +461,6 @@ int main(int argc, char *argv[])
     printf("timeScfLoop[rank==0] = %lf sec\n",timeScfLoop);
     printf(".../lsms.nscf = %lf sec\n",timeScfLoop/(double)lsms.nscf);
     printf("timeCalcChemPot[rank==0]/lsms.nscf = %lf sec\n",timeCalcChemPot/(double)lsms.nscf);
-    printf("\n********** Printing energy results:\n");
   }
   shmem_barrier_all();
 
