@@ -1,19 +1,16 @@
 # Tested with 
-# gcc/4.3.2
-# hdf5/1.6.10
-# ompi/1.4.2-gnu4.3.2
+#  - gcc ver. 4.6.7
+#  - SHMEM-versions: UH Reference implementation (gasnet-ibv)
+#  - Prebuilt HDF5 binary (Linux 2.6 CentOS 6 x86_64, gcc-4.4.7)
+#  - ACML installation (version 4.4.0, 64bit, gfortran)
 
 
 #extra
 export USE_OPENMP=0
 
-ACML_DIR=/home/sidjana/opt/acml_install/gfortran64
+ACML_DIR=/path/to/acml_install/gfortran64
 
-export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv /usr/lib64/libppl_c.so.4  -pthread  -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
-#export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv /usr/lib64/libppl_c.so.2 -L/opt/local/gcc/5.2.0/lib64/ -pthread  -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
-
-
-#export LIBS += -L$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -lsz -lz -L$(ACML_DIR)/lib -lacml -lacml_mv  -L/sw/global/compilers/gcc/4.8.2/lib64/ -pthread -L/sw/taurus/libraries/bullxmpi/1.2.4.3/lib/ -lmpi -lmpi_cxx -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
+export LIBS += -L$(HDF5_DIR)/lib -Wl,rpath,$(HDF5_DIR)/lib -lhdf5_fortran -lhdf5 -L/usr/lib64 -L$(ACML_DIR)/lib -Wl,rpath,$(ACML_DIR)/lib -lacml  /usr/lib64/libppl_c.so.4  -pthread  -ldl -lm -lnuma -lgfortran -Wl,--export-dynamic -lrt -lnsl -lutil
 
 export ADD_LIBS += -L$(TOP_DIR)/CBLAS/lib -lcblas_LINUX -L$(ACML_DIR) -lacml -lgfortran $(PAPI_POST_LINK_OPTS)
 
@@ -28,9 +25,5 @@ export F77 = oshfort
 export CXX = oshcxx  -std=c++0x
 export CC = oshcc 
 
-## For OpenMPI's implementation, the compiler wrappers are named as shmemcc/shmemfort
-#export F77 = oshfort
-#export CXX = oshcxx -std=c++11
-#export CC  = oshcc
 
 export LUACXX = $(CXX)

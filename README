@@ -5,15 +5,19 @@
    written in MPI. The OpenSHMEM version was built on top of
    revision-228 of that MPI version.
 
+
 ** Additional s/w Requirements:
+   - The authors have tested the application using:
+     - gcc ver. 4.6.7
+     - SHMEM-versions: UH Reference implementation (gasnet-ibv)
+     - Prebuilt HDF5 binary (Linux 2.6 CentOS 6 x86_64, gcc-4.4.7)
+     - ACML installation (version 4.4.0, 64nit, gfortran)
+
+   - Prerequisites:
    1. OpenSHMEM installation [set the correct compiler wrapper names in ${PARENT_DIR}/Makefile]
    2. HDF5 installation [set HDF5_DIR in ${PARENT_DIR}/Makefile]
    3. ACML installation (version 4-4-0) [set ACML_DIR in ${PARENT_DIR}/architecture.h]
 
-   - The authors have tested the application using:
-     -- SHMEM-versions: UH Reference implementation (gasnet-ibv)
-     -- Prebuilt HDF5 binary (Linux-2.6, x86_64, gcc-4.4.7)
-     -- ACML installation (version 4.4.0, 64nit, gfortran)
 
 
 ** Running the application:
@@ -33,6 +37,7 @@
      3. Additional details about the relation of number of atoms and number of processes/ranks/PEs 
         can be found at https://asc.llnl.gov/CORAL-benchmarks/Summaries/LSMS_Summary_v1.1.pdf
 
+
 ** Generated output:
    - File output:
      Text files named 'k.out', 'w_fe2.<atom-id>' are generated
@@ -42,6 +47,7 @@
      is in terms of number of ticks by the TSC (Time stamp
      counter). (TODO: Display results in terms of seconds. Divide
      timer by the division-factor (obtainable by MSR))
+
 
 ** Contact:
    - OpenSHMEM version    : Siddhartha Jana  (Univ of Houston) <sidjana@cs.uh.edu> 
