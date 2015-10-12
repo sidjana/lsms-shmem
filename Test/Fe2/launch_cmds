@@ -1,9 +1,9 @@
 Using 'mpirun' launcher:
-mpirun  -bynode -bind-to-core  -hostfile temp -n 2  sh lsmswrap.sh lsms i_lsms 2>&1
+mpirun  -bynode -bind-to-core -n 2 lsms i_lsms 2>&1
 
 In a SLURM environment:
-srun -n 100 -N 22  --mem=9000 sh lsmswrap.sh ./lsms i_lsms 2>&1 
+srun -n 100 -N 22  --mem=9000 ./lsms i_lsms 2>&1 
 
 To Debug:
-srun -p sandy -N 2 --mem=4096 sh lsmswrap.sh xterm -e gdb --args ./lsms i_lsms 2>&1 
+srun -p sandy -N 2 --mem=4096 xterm -e gdb --args ./lsms i_lsms 2>&1 
 
